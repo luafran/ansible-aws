@@ -1,0 +1,9 @@
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  roles:
+    - build-vpc
+
+  tasks:
+    - debug: var=vpc

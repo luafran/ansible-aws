@@ -1,0 +1,32 @@
+---
+
+- name: Create VPC
+  ec2_vpc:
+    state: present
+    cidr_block: "{{ vpc_cidr_block }}"
+    resource_tags: { "Name": "{{ vpc_name }}", "Project": "{{ project_name }}", "Environment": "{{ env_name }}" }
+    subnets:
+      - cidr: "{{ subnet1_cidr }}"
+        az: us-east-1b
+        resource_tags: { "Name":"{{ vpc_name }}-public01", "Project":"{{ project_name }}", "Environment": "{{ env_name }}" }
+      - cidr: "{{ subnet2_cidr }}"
+        az: us-east-1c
+        resource_tags: { "Name":"{{ vpc_name }}-public02", "Project":"{{ project_name }}", "Environment": "{{ env_name }}" }
+      - cidr: "{{ subnet3_cidr }}"
+        az: us-east-1d
+        resource_tags: { "Name":"{{ vpc_name }}-public03", "Project":"{{ project_name }}", "Environment": "{{ env_name }}" }
+      - cidr: "{{ subnet4_cidr }}"
+        az: us-east-1e
+        resource_tags: { "Name":"{{ vpc_name }}-public04", "Project":"{{ project_name }}", "Environment": "{{ env_name }}" }
+    internet_gateway: True
+    route_tables:
+      - subnets:
+        - "{{ subnet1_cidr }}"
+        - "{{ subnet2_cidr }}"
+        - "{{ subnet3_cidr }}"
+        - "{{ subnet4_cidr }}"
+        routes:
+          - dest: 0.0.0.0/0
+            gw: igw
+    region: "{{ vpc_region }}"
+  register: vpc
