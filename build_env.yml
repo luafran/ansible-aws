@@ -4,6 +4,7 @@
 
   roles:
     - build-vpc
+    - build-instances
 
   tasks:
-    - debug: var=vpc
+    - debug: var=vpc_id

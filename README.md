@@ -1,5 +1,6 @@
 # Setup Environment to Use Ansible
 ```
+sudo apt-get install python-dev
 sudo pip install boto virtualenvwrapper
 mkvirtualenv databus
 pip install ansible

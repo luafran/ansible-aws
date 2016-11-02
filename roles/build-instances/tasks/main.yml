@@ -1,0 +1,75 @@
+- name: Create frontend instance
+  ec2:
+    key_name: "{{ key_name }}"
+    group_id: ['{{ ssh_sg_id }}','{{ frontend_sg_id}}']
+    instance_type: t2.micro
+    image: "{{ ami_id }}"
+    wait: yes
+    wait_timeout: 500
+    count: 1
+    instance_tags:
+      Name: "ubp-frontend"
+      role: "frontend"
+      project": "{{ project_name }}"
+      environment": "{{ env_name }}"
+    monitoring: no
+    region: "{{ vpc_region }}"
+    vpc_subnet_id: "{{ public_subnet_az1_id }}"
+    assign_public_ip: yes
+
+- name: Create services instance
+  ec2:
+    key_name: "{{ key_name }}"
+    group_id: ['{{ ssh_sg_id }}','{{ services_sg_id}}']
+    instance_type: t2.micro
+    image: "{{ ami_id }}"
+    wait: yes
+    wait_timeout: 500
+    count: 1
+    instance_tags:
+      Name: "ubp-services"
+      role: "services"
+      project": "{{ project_name }}"
+      environment": "{{ env_name }}"
+    monitoring: no
+    region: "{{ vpc_region }}"
+    vpc_subnet_id: "{{ public_subnet_az1_id }}"
+    assign_public_ip: no
+
+- name: Create database instance
+  ec2:
+    key_name: "{{ key_name }}"
+    group_id: ['{{ ssh_sg_id }}','{{ mysql_sg_id}}']
+    instance_type: t2.micro
+    image: "{{ ami_id }}"
+    wait: yes
+    wait_timeout: 500
+    count: 1
+    instance_tags:
+      Name: "ubp-database"
+      role: "mysql"
+      project": "{{ project_name }}"
+      environment": "{{ env_name }}"
+    monitoring: no
+    region: "{{ vpc_region }}"
+    vpc_subnet_id: "{{ public_subnet_az1_id }}"
+    assign_public_ip: no
+
+- name: Create message queue instance
+  ec2:
+    key_name: "{{ key_name }}"
+    group_id: ['{{ ssh_sg_id }}','{{ rabbitmq_sg_id}}']
+    instance_type: t2.micro
+    image: "{{ ami_id }}"
+    wait: yes
+    wait_timeout: 500
+    count: 1
+    instance_tags:
+      Name: "ubp-message-queue"
+      role: "rabbitmq"
+      project": "{{ project_name }}"
+      environment": "{{ env_name }}"
+    monitoring: no
+    region: "{{ vpc_region }}"
+    vpc_subnet_id: "{{ public_subnet_az1_id }}"
+    assign_public_ip: no

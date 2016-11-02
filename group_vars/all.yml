@@ -1,1 +1,9 @@
-project_name: databus
+project_name: ubp-lab4
+vpc_region: us-east-1
+vpc_cidr_block: 172.20.0.0/16
+subnet1_cidr: 172.20.16.0/20
+subnet2_cidr: 172.20.32.0/20
+subnet3_cidr: 172.20.48.0/20
+subnet4_cidr: 172.20.64.0/20
+ami_id: ami-b73b63a0
+key_name: databus-dev
