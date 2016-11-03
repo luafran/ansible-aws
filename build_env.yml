@@ -4,6 +4,7 @@
 
   roles:
     - build-vpc
+    - build-sec-groups
     - build-instances
 
   tasks:

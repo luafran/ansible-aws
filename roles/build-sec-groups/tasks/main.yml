@@ -1,0 +1,141 @@
+### Create Security Groups.
+
+# ssh SG
+- name: Create ssh Security Group
+  ec2_group:
+    name: "{{ vpc_name }}-sg-ssh"
+    description: "Allows external SSH access"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    rules:
+      - proto: "tcp"
+        from_port: "22"
+        to_port: "22"
+        cidr_ip: "0.0.0.0/0"
+  register: my_ssh_sg
+
+- name: Set ssh SG ID
+  set_fact:
+    ssh_sg_id: "{{ my_ssh_sg.group_id }}"
+
+- name: Tag Name for ssh Security Group
+  ec2_tag:
+    region: "{{ vpc_region }}"
+    resource: "{{ ssh_sg_id }}"
+    state: present
+    tags:
+      Name: "{{ vpc_name }}-sg-ssh"
+      project": "{{ project_name }}"
+      environment": "{{ env_name }}"
+
+# frontend SG
+- name: Create frontend Security Group
+  ec2_group:
+    name: "{{ vpc_name }}-sg-frontend"
+    description: "SG for frontend instances"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    rules:
+      - proto: "tcp"
+        from_port: "80"
+        to_port: "80"
+        cidr_ip: "0.0.0.0/0"
+  register: my_frontend_sg
+
+- name: Set frontend SG ID
+  set_fact:
+    frontend_sg_id: "{{ my_frontend_sg.group_id }}"
+
+- name: Tag Name for frontend Security Group
+  ec2_tag:
+    region: "{{ vpc_region }}"
+    resource: "{{ frontend_sg_id }}"
+    state: present
+    tags:
+      Name: "{{ vpc_name }}-sg-frontend"
+      project": "{{ project_name }}"
+      environment": "{{ env_name }}"
+
+# services SG
+- name: Create services Security Group
+  ec2_group:
+    name: "{{ vpc_name }}-sg-services"
+    description: "SG for service instances"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    rules:
+      - proto: "tcp"
+        from_port: "8080"
+        to_port: "8090"
+        group_id: "{{ frontend_sg_id}}"
+  register: my_services_sg
+
+- name: Set services SG ID
+  set_fact:
+    services_sg_id: "{{ my_services_sg.group_id }}"
+
+- name: Tag Name for services Security Group
+  ec2_tag:
+    region: "{{ vpc_region }}"
+    resource: "{{ services_sg_id }}"
+    state: present
+    tags:
+      Name: "{{ vpc_name }}-sg-services"
+      project": "{{ project_name }}"
+      environment": "{{ env_name }}"
+
+# mysql SG
+- name: Create mysql Security Group
+  ec2_group:
+    name: "{{ vpc_name }}-sg-mysql"
+    description: "SG for mysql instances"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    rules:
+      - proto: "tcp"
+        from_port: "3306"
+        to_port: "3306"
+        group_id: "{{ services_sg_id}}"
+  register: my_mysql_sg
+
+- name: Set mysql SG ID
+  set_fact:
+    mysql_sg_id: "{{ my_mysql_sg.group_id }}"
+
+- name: Tag Name for mysql Security Group
+  ec2_tag:
+    region: "{{ vpc_region }}"
+    resource: "{{ mysql_sg_id }}"
+    state: present
+    tags:
+      Name: "{{ vpc_name }}-sg-mysql"
+      project": "{{ project_name }}"
+      environment": "{{ env_name }}"
+
+# rabbitmq SG
+- name: Create rabbitmq Security Group
+  ec2_group:
+    name: "{{ vpc_name }}-sg-rabbitmq"
+    description: "SG for rabbitmq instances"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    rules:
+      - proto: "tcp"
+        from_port: "5672"
+        to_port: "5672"
+        group_id: "{{ services_sg_id}}"
+  register: my_rabbitmq_sg
+
+- name: Set rabbitmq SG ID
+  set_fact:
+    rabbitmq_sg_id: "{{ my_rabbitmq_sg.group_id }}"
+
+- name: Tag Name for rabbitmq Security Group
+  ec2_tag:
+    region: "{{ vpc_region }}"
+    resource: "{{ rabbitmq_sg_id }}"
+    state: present
+    tags:
+      Name: "{{ vpc_name }}-sg-rabbitmq"
+      project": "{{ project_name }}"
+      environment": "{{ env_name }}"
