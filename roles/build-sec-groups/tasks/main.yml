@@ -25,8 +25,8 @@
     state: present
     tags:
       Name: "{{ vpc_name }}-sg-ssh"
-      project": "{{ project_name }}"
-      environment": "{{ env_name }}"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"
 
 # frontend SG
 - name: Create frontend Security Group
@@ -53,8 +53,8 @@
     state: present
     tags:
       Name: "{{ vpc_name }}-sg-frontend"
-      project": "{{ project_name }}"
-      environment": "{{ env_name }}"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"
 
 # services SG
 - name: Create services Security Group
@@ -81,8 +81,8 @@
     state: present
     tags:
       Name: "{{ vpc_name }}-sg-services"
-      project": "{{ project_name }}"
-      environment": "{{ env_name }}"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"
 
 # mysql SG
 - name: Create mysql Security Group
@@ -109,8 +109,8 @@
     state: present
     tags:
       Name: "{{ vpc_name }}-sg-mysql"
-      project": "{{ project_name }}"
-      environment": "{{ env_name }}"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"
 
 # rabbitmq SG
 - name: Create rabbitmq Security Group
@@ -137,5 +137,5 @@
     state: present
     tags:
       Name: "{{ vpc_name }}-sg-rabbitmq"
-      project": "{{ project_name }}"
-      environment": "{{ env_name }}"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"
