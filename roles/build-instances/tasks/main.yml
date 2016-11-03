@@ -10,8 +10,8 @@
     instance_tags:
       Name: "ubp-frontend"
       role: "frontend"
-      project": "{{ project_name }}"
-      environment": "{{ env_name }}"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"
     monitoring: no
     region: "{{ vpc_region }}"
     vpc_subnet_id: "{{ public_subnet_az1_id }}"
@@ -29,8 +29,8 @@
     instance_tags:
       Name: "ubp-services"
       role: "services"
-      project": "{{ project_name }}"
-      environment": "{{ env_name }}"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"
     monitoring: no
     region: "{{ vpc_region }}"
     vpc_subnet_id: "{{ public_subnet_az1_id }}"
@@ -48,8 +48,8 @@
     instance_tags:
       Name: "ubp-database"
       role: "mysql"
-      project": "{{ project_name }}"
-      environment": "{{ env_name }}"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"
     monitoring: no
     region: "{{ vpc_region }}"
     vpc_subnet_id: "{{ public_subnet_az1_id }}"
@@ -67,8 +67,8 @@
     instance_tags:
       Name: "ubp-message-queue"
       role: "rabbitmq"
-      project": "{{ project_name }}"
-      environment": "{{ env_name }}"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"
     monitoring: no
     region: "{{ vpc_region }}"
     vpc_subnet_id: "{{ public_subnet_az1_id }}"
