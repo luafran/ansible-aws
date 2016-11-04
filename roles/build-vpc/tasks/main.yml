@@ -7,8 +7,8 @@
     region:           "{{ vpc_region }}"
     state:            "present"
     tags:
-      project": "{{ project_name }}"
-      environment": "{{ env_name }}"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"
   register: my_vpc
 
 - name:               Set VPC ID in variable
@@ -87,7 +87,7 @@
     vpc_id: "{{ vpc_id }}"
     region: "{{ vpc_region }}"
     tags:
-      Name: "{{ vpc_name }}-Public"
+      Name: "{{ vpc_name }}-public"
     subnets:
       - "{{ public_subnet_az1_id }}"
       - "{{ public_subnet_az2_id }}"

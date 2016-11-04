@@ -1,0 +1,11 @@
+- name: img-proc-api-svc container
+  docker_container:
+    name: img-proc-api-svc               
+    image: gseverina/img-proc-api-svc:1.0.0
+    state: started
+    ports:
+      - "8082:8082"
+    env:                      
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: 123456
+      MYSQL_DATABASE: spi

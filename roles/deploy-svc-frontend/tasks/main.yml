@@ -1,0 +1,7 @@
+- name: web container
+  docker_container:
+    name: web
+    image: gseverina/web:1.0.0
+    state: started
+    ports:
+      - "8080:8080"

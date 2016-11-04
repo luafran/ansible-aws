@@ -1,0 +1,21 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+{% for item in groups['frontend'] %}
+{{ item }} web
+{% endfor %}
+
+{% for item in groups['services'] %}
+{{ item }} auth-svc
+{{ item }} img-proc-api-svc
+{{ item }} img-proc-worker-svc
+{{ item }} storage-svc
+{% endfor %}
+
+{% for item in groups['mysql'] %}
+{{ item }} mysql
+{% endfor %}
+
+{% for item in groups['rabbitmq'] %}
+{{ item }} rabbitmq
+{% endfor %}

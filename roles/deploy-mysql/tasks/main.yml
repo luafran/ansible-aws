@@ -1,0 +1,14 @@
+- name: mysql-svc container
+  docker_container:
+    name: mysql-svc
+    image: gseverina/mysql-svc:1.0.0
+    state: started
+    ports:
+      - "3306:3306"
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
+    env:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: 123456
+      MYSQL_DATABASE: spi

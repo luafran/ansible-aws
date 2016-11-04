@@ -1,0 +1,9 @@
+- name: storage-svc
+  docker_container:
+    name: storage-svc
+    image: gseverina/storage-svc:1.0.0
+    state: started
+    ports:
+      - "8083:8083"
+    volumes:
+      - /tmp/storage-svc:/tmp/storage-svc

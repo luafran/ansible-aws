@@ -1,0 +1,12 @@
+- name: auth-svc container
+  docker_container:
+    name: auth-svc
+    image: gseverina/auth-svc:1.0.0
+    state: started
+    ports:
+      - "8081:8081"
+    env:
+      MYSQL_ENDPOINT: mysql
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: 123456
+      MYSQL_DATABASE: spi

@@ -1,0 +1,5 @@
+- name: img-proc-worker-svc container
+  docker_container:
+    name: img-proc-worker-svc
+    image: gseverina/img-proc-worker-svc:1.0.0
+    state: started

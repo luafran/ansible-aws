@@ -16,6 +16,20 @@
     region: "{{ vpc_region }}"
     vpc_subnet_id: "{{ public_subnet_az1_id }}"
     assign_public_ip: yes
+  register: my_frontend_instance
+
+# - name: Debug instance
+#  debug: var=my_frontend_instance
+
+- name: Set frontend instance public IP in variable
+  set_fact:
+    frontend_instance_ip: "{{ my_frontend_instance['instances'][0]['public_ip'] }}"
+
+- name: Add frontend instance to dynamic hosts
+  add_host:
+    name: "{{ frontend_instance_ip }}"
+    groups: frontend
+    ansible_ssh_host: "{{ frontend_instance_ip }}"
 
 - name: Create services instance
   ec2:
@@ -34,7 +48,18 @@
     monitoring: no
     region: "{{ vpc_region }}"
     vpc_subnet_id: "{{ public_subnet_az1_id }}"
-    assign_public_ip: no
+    assign_public_ip: yes
+  register: my_services_instance
+
+- name: Set services instance public IP in variable
+  set_fact:
+    services_instance_ip: "{{ my_services_instance['instances'][0]['public_ip'] }}"
+
+- name: Add services instance to dynamic hosts
+  add_host:
+    name: "{{ services_instance_ip }}"
+    groups: services
+    ansible_ssh_host: "{{ services_instance_ip }}"
 
 - name: Create database instance
   ec2:
@@ -53,7 +78,18 @@
     monitoring: no
     region: "{{ vpc_region }}"
     vpc_subnet_id: "{{ public_subnet_az1_id }}"
-    assign_public_ip: no
+    assign_public_ip: yes
+  register: my_mysql_instance
+
+- name: Set mysql instance public IP in variable
+  set_fact:
+    mysql_instance_ip: "{{ my_mysql_instance['instances'][0]['public_ip'] }}"
+
+- name: Add mysql instance to dynamic hosts
+  add_host:
+    name: "{{ mysql_instance_ip }}"
+    groups: mysql
+    ansible_ssh_host: "{{ mysql_instance_ip }}"
 
 - name: Create message queue instance
   ec2:
@@ -72,4 +108,23 @@
     monitoring: no
     region: "{{ vpc_region }}"
     vpc_subnet_id: "{{ public_subnet_az1_id }}"
-    assign_public_ip: no
+    assign_public_ip: yes
+  register: my_rabbitmq_instance
+
+- name: Set rabbitmq instance public IP in variable
+  set_fact:
+    rabbitmq_instance_ip: "{{ my_rabbitmq_instance['instances'][0]['public_ip'] }}"
+
+- name: Add rabbitmq instance to dynamic hosts
+  add_host:
+    name: "{{ rabbitmq_instance_ip }}"
+    groups: rabbitmq
+    ansible_ssh_host: "{{ rabbitmq_instance_ip }}"
+
+- name: Wait for SSH
+  wait_for:
+    host: "{{ rabbitmq_instance_ip }}"
+    port: 22
+    delay: 10
+    timeout: 320
+    state: started

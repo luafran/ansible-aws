@@ -9,3 +9,8 @@
 
   tasks:
     - debug: var=vpc_id
+
+- hosts: frontend:services:mysql:rabbitmq
+  become: true
+  roles:
+    - hosts

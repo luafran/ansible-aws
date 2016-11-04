@@ -1,0 +1,22 @@
+- hosts: tag_role_mysql
+  become: true
+  roles:
+     - deploy-mysql
+
+- hosts: tag_role_rabbitmq
+  become: true
+  roles:
+     - deploy-rabbitmq
+
+- hosts: tag_role_frontend
+  become: true
+  roles:
+     - deploy-svc-frontend
+
+- hosts: tag_role_services
+  become: true
+  roles:
+     - deploy-svc-auth
+     - deploy-svc-img-proc-api
+     - deploy-svc-img-proc-worker
+     - deploy-svc-storage

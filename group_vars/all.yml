@@ -7,3 +7,6 @@ subnet3_cidr: 172.20.48.0/20
 subnet4_cidr: 172.20.64.0/20
 ami_id: ami-b73b63a0
 key_name: databus-dev
+ansible_ssh_user: ec2-user
+ansible_ssh_private_key_file: ~/.ssh/databus-dev.pem
+host_key_checking: False

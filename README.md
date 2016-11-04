@@ -7,11 +7,22 @@ pip install ansible
 pip install awscli
 ```
 
-# Create Environment Using Ansible
+# Create Infrastructure
 ```
 workon databus
-ansible-playbook -i localhost, site.yml --extra-vars "vpc_name=databus-dev env_name=dev"
+ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i localhost, build-infra.yml --extra-vars "vpc_name=ubp-lab4 env_name=dev"
 ```
+
+# Install Docker Engine
+```shell
+EC2_INI_PATH=./inventory/ec2-inventory.ini ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ./inventory/ec2-inventory.py install-docker-engine.yml
+```
+
+# Cleanup AWS infrastructure
+
+- Delete instances (filter by project name)
+- Delete security groups (filter by project name)
+- Delete VPC (filter by project name)
 
 # Code Organization
 ```
