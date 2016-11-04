@@ -2,4 +2,5 @@
   docker_container:
     name: img-proc-worker-svc
     image: gseverina/img-proc-worker-svc:1.0.0
+    network_mode: host
     state: started

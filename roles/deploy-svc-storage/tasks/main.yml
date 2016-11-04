@@ -2,6 +2,7 @@
   docker_container:
     name: storage-svc
     image: gseverina/storage-svc:1.0.0
+    network_mode: host
     state: started
     ports:
       - "8083:8083"

@@ -18,6 +18,11 @@ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i localhost, build-infra.yml -
 EC2_INI_PATH=./inventory/ec2-inventory.ini ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ./inventory/ec2-inventory.py install-docker-engine.yml
 ```
 
+# Deploy Services
+```shell
+EC2_INI_PATH=./inventory/ec2-inventory.ini ansible-playbook -i ./inventory/ec2-inventory.py deploy-services.yml
+```
+
 # Cleanup AWS infrastructure
 
 - Delete instances (filter by project name)

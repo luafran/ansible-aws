@@ -1,21 +1,21 @@
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 
-{% for item in groups['frontend'] %}
-{{ item }} web
+{% for host in groups['frontend'] %}
+{{ hostvars[host]['private_ip'] }} web
 {% endfor %}
 
-{% for item in groups['services'] %}
-{{ item }} auth-svc
-{{ item }} img-proc-api-svc
-{{ item }} img-proc-worker-svc
-{{ item }} storage-svc
+{% for host in groups['services'] %}
+{{ hostvars[host]['private_ip'] }} auth-svc
+{{ hostvars[host]['private_ip'] }} img-proc-api-svc
+{{ hostvars[host]['private_ip'] }} img-proc-worker-svc
+{{ hostvars[host]['private_ip'] }} storage-svc
 {% endfor %}
 
-{% for item in groups['mysql'] %}
-{{ item }} mysql
+{% for host in groups['mysql'] %}
+{{ hostvars[host]['private_ip'] }} mysql
 {% endfor %}
 
-{% for item in groups['rabbitmq'] %}
-{{ item }} rabbitmq
+{% for host in groups['rabbitmq'] %}
+{{ hostvars[host]['private_ip'] }} rabbitmq
 {% endfor %}

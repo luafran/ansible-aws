@@ -2,6 +2,7 @@
   docker_container:
     name: mysql-svc
     image: gseverina/mysql-svc:1.0.0
+    network_mode: host
     state: started
     ports:
       - "3306:3306"

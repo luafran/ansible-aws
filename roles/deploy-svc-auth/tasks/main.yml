@@ -2,6 +2,7 @@
   docker_container:
     name: auth-svc
     image: gseverina/auth-svc:1.0.0
+    network_mode: host
     state: started
     ports:
       - "8081:8081"

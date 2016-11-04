@@ -2,6 +2,7 @@
   docker_container:
     name: web
     image: gseverina/web:1.0.0
+    network_mode: host
     state: started
     ports:
       - "8080:8080"
