@@ -1,0 +1,27 @@
+# services SG
+- name: Create services Security Group
+  ec2_group:
+    name: "{{ vpc_name }}-sg-services"
+    description: "SG for service instances"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    rules:
+      - proto: "tcp"
+        from_port: "8080"
+        to_port: "8090"
+        group_id: "{{ frontend_sg_id}}"
+  register: my_services_sg
+
+- name: Set services SG ID
+  set_fact:
+    services_sg_id: "{{ my_services_sg.group_id }}"
+
+- name: Tag Name for services Security Group
+  ec2_tag:
+    region: "{{ vpc_region }}"
+    resource: "{{ services_sg_id }}"
+    state: present
+    tags:
+      Name: "{{ vpc_name }}-sg-services"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"

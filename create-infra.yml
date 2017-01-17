@@ -3,9 +3,9 @@
   gather_facts: False
 
   roles:
-    - build-vpc
-    - build-sec-groups
-    - build-instances
+    - create-vpc
+    - create-sec-groups
+    - create-instances
 
   tasks:
     - debug: var=vpc_id
@@ -13,4 +13,4 @@
 - hosts: frontend:services:mysql:rabbitmq
   become: true
   roles:
-    - hosts
+    - update-hosts

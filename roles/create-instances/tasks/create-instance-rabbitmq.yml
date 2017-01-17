@@ -1,0 +1,43 @@
+## rabbitmq instance
+- name: Create message queue instance
+  ec2:
+    key_name: "{{ key_name }}"
+    group_id: ['{{ ssh_sg_id }}','{{ rabbitmq_sg_id}}']
+    instance_type: t2.micro
+    image: "{{ ami_id }}"
+    wait: yes
+    wait_timeout: 500
+    count: 1
+    instance_tags:
+      Name: "ubp-message-queue"
+      role: "rabbitmq"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"
+    monitoring: no
+    region: "{{ vpc_region }}"
+    vpc_subnet_id: "{{ public_subnet_az1_id }}"
+    assign_public_ip: yes
+  register: my_rabbitmq_instance
+
+- name: Set rabbitmq instance public IP in variable
+  set_fact:
+    rabbitmq_public_ip: "{{ my_rabbitmq_instance['instances'][0]['public_ip'] }}"
+
+- name: Set rabbitmq instance private IP in variable
+  set_fact:
+    rabbitmq_private_ip: "{{ my_rabbitmq_instance['instances'][0]['private_ip'] }}"
+
+- name: Add rabbitmq instance to dynamic hosts
+  add_host:
+    name: "{{ rabbitmq_public_ip }}"
+    groups: rabbitmq
+    ansible_ssh_host: "{{ rabbitmq_public_ip }}"
+    private_ip: "{{ rabbitmq_private_ip }}"
+
+- name: Wait for rabbitmq SSH
+  wait_for:
+    host: "{{ rabbitmq_public_ip }}"
+    port: 22
+    delay: 10
+    timeout: 320
+    state: started

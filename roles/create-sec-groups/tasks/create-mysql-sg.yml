@@ -1,0 +1,27 @@
+# mysql SG
+- name: Create mysql Security Group
+  ec2_group:
+    name: "{{ vpc_name }}-sg-mysql"
+    description: "SG for mysql instances"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    rules:
+      - proto: "tcp"
+        from_port: "3306"
+        to_port: "3306"
+        group_id: "{{ services_sg_id}}"
+  register: my_mysql_sg
+
+- name: Set mysql SG ID
+  set_fact:
+    mysql_sg_id: "{{ my_mysql_sg.group_id }}"
+
+- name: Tag Name for mysql Security Group
+  ec2_tag:
+    region: "{{ vpc_region }}"
+    resource: "{{ mysql_sg_id }}"
+    state: present
+    tags:
+      Name: "{{ vpc_name }}-sg-mysql"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"

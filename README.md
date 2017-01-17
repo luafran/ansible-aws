@@ -10,12 +10,12 @@ pip install awscli
 # Create Infrastructure
 ```
 workon databus
-ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i localhost, build-infra.yml --extra-vars "vpc_name=ubp-lab4 env_name=dev"
+ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i localhost, create-infra.yml --extra-vars "vpc_name=ubp-lab4 env_name=dev"
 ```
 
-# Install Docker Engine
+# Install Docker Engine and docker-py
 ```shell
-EC2_INI_PATH=./inventory/ec2-inventory.ini ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ./inventory/ec2-inventory.py install-docker-engine.yml
+EC2_INI_PATH=./inventory/ec2-inventory.ini ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ./inventory/ec2-inventory.py install-docker.yml
 ```
 
 # Deploy Services
@@ -36,7 +36,7 @@ EC2_INI_PATH=./inventory/ec2-inventory.ini ansible-playbook -i ./inventory/ec2-i
 ├── group_vars
 │   └── all.yml -> default values global for all groups and roles
 ├── roles
-│   └── build-vpc
+│   └── create-vpc
 │       ├── tasks
 │       │   └── main.yml -> tasks for this role
 │       └── vars

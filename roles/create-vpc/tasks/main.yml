@@ -1,0 +1,4 @@
+- include: create-vpc.yml
+- include: create-vpc-ig.yml
+- include: create-public-subnets.yml
+- include: create-public-subnets-rt.yml

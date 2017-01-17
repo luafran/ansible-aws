@@ -1,0 +1,43 @@
+## mysql instance
+- name: Create database instance
+  ec2:
+    key_name: "{{ key_name }}"
+    group_id: ['{{ ssh_sg_id }}','{{ mysql_sg_id}}']
+    instance_type: t2.micro
+    image: "{{ ami_id }}"
+    wait: yes
+    wait_timeout: 500
+    count: 1
+    instance_tags:
+      Name: "ubp-database"
+      role: "mysql"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"
+    monitoring: no
+    region: "{{ vpc_region }}"
+    vpc_subnet_id: "{{ public_subnet_az1_id }}"
+    assign_public_ip: yes
+  register: my_mysql_instance
+
+- name: Set mysql instance public IP in variable
+  set_fact:
+    mysql_public_ip: "{{ my_mysql_instance['instances'][0]['public_ip'] }}"
+
+- name: Set mysql instance private IP in variable
+  set_fact:
+    mysql_private_ip: "{{ my_mysql_instance['instances'][0]['private_ip'] }}"
+
+- name: Add mysql instance to dynamic hosts
+  add_host:
+    name: "{{ mysql_public_ip }}"
+    groups: mysql
+    ansible_ssh_host: "{{ mysql_public_ip }}"
+    private_ip: "{{ mysql_private_ip }}"
+
+- name: Wait for mysql SSH
+  wait_for:
+    host: "{{ mysql_public_ip }}"
+    port: 22
+    delay: 10
+    timeout: 320
+    state: started

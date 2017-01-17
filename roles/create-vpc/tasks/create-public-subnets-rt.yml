@@ -1,0 +1,27 @@
+### Setup route table for public subnets
+
+# We will have one Route Table for the public subnet.
+# The Route Table for the public subnet will use the
+# Internet Gateway as default gateway.
+# We can use the same Route Table for the two public subnets,
+# as their configuration is identical:
+# they both use the internet gateway
+# to reach the outside world.
+#
+# We don't see it here, but the Route Tables will also contain
+# a route for resources inside the VPC, so that if we need
+# to reach an internal resource, we don't go to the Internet
+# Gateway or the NAT Gateway.
+
+- name: Setup public subnet route table
+  ec2_vpc_route_table:
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    tags:
+      Name: "{{ vpc_name }}-public"
+    subnets:
+      - "{{ public_subnet_az1_id }}"
+      - "{{ public_subnet_az2_id }}"
+    routes:
+      - dest: "0.0.0.0/0"
+        gateway_id: "{{ igw_id }}"

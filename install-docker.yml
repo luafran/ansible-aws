@@ -1,0 +1,4 @@
+- hosts: tag_role_frontend:tag_role_services:tag_role_mysql:tag_role_rabbitmq
+  become: true
+  roles:
+     - install-docker

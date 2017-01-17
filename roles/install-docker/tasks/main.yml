@@ -1,20 +1,2 @@
-- name: Download Docker engine installer script
-  command: curl -o install.sh -fsSL https://get.docker.com/
-
-- name: Set execution permissions to Docker installer script
-  file: path=./install.sh mode="u+rwx,g+rx,o+rx"
-
-- name: Run Docker installer script
-  command: ./install.sh
-
-- service: name=docker state=restarted
-
-- name: Install the package "python-pip"
-  yum:
-    name: python-pip
-    state: present
-
-- name: install docker-py
-  pip:
-    name: docker-py
-    state: latest
+- include: install-docker-engine.yml
+- include: install-docker-py.yml

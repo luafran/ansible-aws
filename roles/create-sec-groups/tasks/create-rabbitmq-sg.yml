@@ -1,0 +1,27 @@
+# rabbitmq SG
+- name: Create rabbitmq Security Group
+  ec2_group:
+    name: "{{ vpc_name }}-sg-rabbitmq"
+    description: "SG for rabbitmq instances"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    rules:
+      - proto: "tcp"
+        from_port: "5672"
+        to_port: "5672"
+        group_id: "{{ services_sg_id}}"
+  register: my_rabbitmq_sg
+
+- name: Set rabbitmq SG ID
+  set_fact:
+    rabbitmq_sg_id: "{{ my_rabbitmq_sg.group_id }}"
+
+- name: Tag Name for rabbitmq Security Group
+  ec2_tag:
+    region: "{{ vpc_region }}"
+    resource: "{{ rabbitmq_sg_id }}"
+    state: present
+    tags:
+      Name: "{{ vpc_name }}-sg-rabbitmq"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"

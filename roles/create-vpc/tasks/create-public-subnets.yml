@@ -1,0 +1,33 @@
+### Creates the subnets
+
+# Public subnet in AZ-1
+- name:               Create Public Subnet [AZ-1]
+  ec2_vpc_subnet:
+    state:            "present"
+    vpc_id:           "{{ vpc_id }}"
+    cidr:             "{{ subnet1_cidr }}"
+    az:               "{{ vpc_region }}b"
+    region:           "{{ vpc_region }}"
+    tags:
+      Name:           "{{ vpc_name }}-public01"
+  register: my_public_subnet_az1
+
+- name:               Set Public Subnet ID in variable [AZ-1]
+  set_fact:
+    public_subnet_az1_id: "{{ my_public_subnet_az1.subnet.id }}"
+
+# Public subnet in AZ-2
+- name:               Create Public Subnet [AZ-2]
+  ec2_vpc_subnet:
+    state:            "present"
+    vpc_id:           "{{ vpc_id }}"
+    cidr:             "{{ subnet2_cidr }}"
+    az:               "{{ vpc_region }}c"
+    region:           "{{ vpc_region }}"
+    tags:
+      Name:           "{{ vpc_name }}-public02"
+  register: my_public_subnet_az2
+
+- name:               Set Public Subnet ID in variable [AZ-2]
+  set_fact:
+    public_subnet_az2_id: "{{ my_public_subnet_az2.subnet.id }}"

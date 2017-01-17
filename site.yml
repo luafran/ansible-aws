@@ -1,1 +1,3 @@
-- include: build-infra.yml
+- include: create-infra.yml
+- include: install-docker-engine.yml
+- include: deploy-services.yml

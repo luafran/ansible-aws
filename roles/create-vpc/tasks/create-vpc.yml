@@ -1,0 +1,16 @@
+### Creates VPC
+
+- name:               Create VPC
+  ec2_vpc_net:
+    name:             "{{ vpc_name }}"
+    cidr_block:       "{{ vpc_cidr_block }}"
+    region:           "{{ vpc_region }}"
+    state:            "present"
+    tags:
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"
+  register: my_vpc
+
+- name:               Set VPC ID in variable
+  set_fact:
+    vpc_id:           "{{ my_vpc.vpc.id }}"

@@ -1,0 +1,27 @@
+# frontend SG
+- name: Create frontend Security Group
+  ec2_group:
+    name: "{{ vpc_name }}-sg-frontend"
+    description: "SG for frontend instances"
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    rules:
+      - proto: "tcp"
+        from_port: "80"
+        to_port: "80"
+        cidr_ip: "0.0.0.0/0"
+  register: my_frontend_sg
+
+- name: Set frontend SG ID
+  set_fact:
+    frontend_sg_id: "{{ my_frontend_sg.group_id }}"
+
+- name: Tag Name for frontend Security Group
+  ec2_tag:
+    region: "{{ vpc_region }}"
+    resource: "{{ frontend_sg_id }}"
+    state: present
+    tags:
+      Name: "{{ vpc_name }}-sg-frontend"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"

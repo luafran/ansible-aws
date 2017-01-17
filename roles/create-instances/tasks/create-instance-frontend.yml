@@ -1,0 +1,46 @@
+## frontend instance
+- name: Create frontend instance
+  ec2:
+    key_name: "{{ key_name }}"
+    group_id: ['{{ ssh_sg_id }}','{{ frontend_sg_id}}']
+    instance_type: t2.micro
+    image: "{{ ami_id }}"
+    wait: yes
+    wait_timeout: 500
+    count: 1
+    instance_tags:
+      Name: "ubp-frontend"
+      role: "frontend"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"
+    monitoring: no
+    region: "{{ vpc_region }}"
+    vpc_subnet_id: "{{ public_subnet_az1_id }}"
+    assign_public_ip: yes
+  register: my_frontend_instance
+
+#- name: Debug instance
+#  debug: var=my_frontend_instance
+
+- name: Set frontend instance public IP in variable
+  set_fact:
+    frontend_public_ip: "{{ my_frontend_instance['instances'][0]['public_ip'] }}"
+
+- name: Set frontend instance private IP in variable
+  set_fact:
+    frontend_private_ip: "{{ my_frontend_instance['instances'][0]['private_ip'] }}"
+
+- name: Add frontend instance to dynamic hosts
+  add_host:
+    name: "{{ frontend_public_ip }}"
+    groups: frontend
+    ansible_ssh_host: "{{ frontend_public_ip }}"
+    private_ip: "{{ frontend_private_ip }}"
+
+- name: Wait for frontend SSH
+  wait_for:
+    host: "{{ frontend_public_ip }}"
+    port: 22
+    delay: 10
+    timeout: 320
+    state: started

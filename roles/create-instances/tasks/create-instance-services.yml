@@ -1,0 +1,43 @@
+## services instance
+- name: Create services instance
+  ec2:
+    key_name: "{{ key_name }}"
+    group_id: ['{{ ssh_sg_id }}','{{ services_sg_id}}']
+    instance_type: t2.micro
+    image: "{{ ami_id }}"
+    wait: yes
+    wait_timeout: 500
+    count: 1
+    instance_tags:
+      Name: "ubp-services"
+      role: "services"
+      project: "{{ project_name }}"
+      environment: "{{ env_name }}"
+    monitoring: no
+    region: "{{ vpc_region }}"
+    vpc_subnet_id: "{{ public_subnet_az1_id }}"
+    assign_public_ip: yes
+  register: my_services_instance
+
+- name: Set services instance public IP in variable
+  set_fact:
+    services_public_ip: "{{ my_services_instance['instances'][0]['public_ip'] }}"
+
+- name: Set services instance private IP in variable
+  set_fact:
+    services_private_ip: "{{ my_services_instance['instances'][0]['private_ip'] }}"
+
+- name: Add services instance to dynamic hosts
+  add_host:
+    name: "{{ services_public_ip }}"
+    groups: services
+    ansible_ssh_host: "{{ services_public_ip }}"
+    private_ip: "{{ services_private_ip }}"
+
+- name: Wait for services SSH
+  wait_for:
+    host: "{{ services_public_ip }}"
+    port: 22
+    delay: 10
+    timeout: 320
+    state: started

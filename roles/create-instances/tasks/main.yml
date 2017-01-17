@@ -1,0 +1,4 @@
+- include: create-instance-frontend.yml
+- include: create-instance-services.yml
+- include: create-instance-mysql.yml
+- include: create-instance-rabbitmq.yml

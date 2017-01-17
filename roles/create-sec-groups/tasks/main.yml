@@ -1,0 +1,5 @@
+- include: create-ssh-sg.yml
+- include: create-frontend-sg.yml
+- include: create-services-sg.yml
+- include: create-mysql-sg.yml
+- include: create-rabbitmq-sg.yml
