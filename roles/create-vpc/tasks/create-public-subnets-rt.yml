@@ -22,6 +22,7 @@
     subnets:
       - "{{ public_subnet_az1_id }}"
       - "{{ public_subnet_az2_id }}"
+      - "{{ public_subnet_az3_id }}"
     routes:
       - dest: "0.0.0.0/0"
         gateway_id: "{{ igw_id }}"

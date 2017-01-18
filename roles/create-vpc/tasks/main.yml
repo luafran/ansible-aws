@@ -2,3 +2,6 @@
 - include: create-vpc-ig.yml
 - include: create-public-subnets.yml
 - include: create-public-subnets-rt.yml
+- include: create-private-subnets.yml
+- include: create-nats.yml
+- include: create-private-subnets-rt.yml

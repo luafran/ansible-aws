@@ -10,8 +10,11 @@ pip install awscli
 # Create Infrastructure
 ```
 workon databus
-ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i localhost, create-infra.yml --extra-vars "vpc_name=ubp-lab4 env_name=dev"
+ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i localhost, create-infra.yml --extra-vars "vpc_name=ubp-lab4 env_name=dev ansible_python_interpreter=python"
 ```
+
+Note: public subnets will not have auto-assign public IP set since Ansible module ec2_vpc_subnet does not support it.
+
 
 # Install Docker Engine and docker-py
 ```shell

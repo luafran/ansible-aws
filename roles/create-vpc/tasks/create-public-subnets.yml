@@ -5,7 +5,7 @@
   ec2_vpc_subnet:
     state:            "present"
     vpc_id:           "{{ vpc_id }}"
-    cidr:             "{{ subnet1_cidr }}"
+    cidr:             "{{ public_subnet1_cidr }}"
     az:               "{{ vpc_region }}b"
     region:           "{{ vpc_region }}"
     tags:
@@ -21,7 +21,7 @@
   ec2_vpc_subnet:
     state:            "present"
     vpc_id:           "{{ vpc_id }}"
-    cidr:             "{{ subnet2_cidr }}"
+    cidr:             "{{ public_subnet2_cidr }}"
     az:               "{{ vpc_region }}c"
     region:           "{{ vpc_region }}"
     tags:
@@ -31,3 +31,19 @@
 - name:               Set Public Subnet ID in variable [AZ-2]
   set_fact:
     public_subnet_az2_id: "{{ my_public_subnet_az2.subnet.id }}"
+
+# Public subnet in AZ-3
+- name:               Create Public Subnet [AZ-3]
+  ec2_vpc_subnet:
+    state:            "present"
+    vpc_id:           "{{ vpc_id }}"
+    cidr:             "{{ public_subnet3_cidr }}"
+    az:               "{{ vpc_region }}d"
+    region:           "{{ vpc_region }}"
+    tags:
+      Name:           "{{ vpc_name }}-public03"
+  register: my_public_subnet_az3
+
+- name:               Set Public Subnet ID in variable [AZ-3]
+  set_fact:
+    public_subnet_az3_id: "{{ my_public_subnet_az3.subnet.id }}"

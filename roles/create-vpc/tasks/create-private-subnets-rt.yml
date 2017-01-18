@@ -1,0 +1,23 @@
+- name: Set up private subnet route table [AZ-1]
+  ec2_vpc_route_table:
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    tags:
+      Name: "{{ vpc_name }}-private-az1"
+    subnets:
+      - "{{ private_subnet_az1_id }}"
+    routes:
+      - dest: "0.0.0.0/0"
+        gateway_id: "{{ nat_gateway_az1_id }}"
+
+- name: Set up private subnet route table [AZ-2]
+  ec2_vpc_route_table:
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    tags:
+      Name: "{{ vpc_name }}-private-az2"
+    subnets:
+      - "{{ private_subnet_az2_id }}"
+    routes:
+      - dest: "0.0.0.0/0"
+        gateway_id: "{{ nat_gateway_az2_id }}"

@@ -1,0 +1,36 @@
+# As you can see, we attach one NAT Gateway to the public subnet of AZ1,
+# and the other to the public subnet of AZ2.
+
+- name: Create NAT GW [AZ-1]
+  ec2_vpc_nat_gateway:
+    state: present
+    subnet_id: "{{ public_subnet_az1_id }}"
+    wait: yes
+    region: "{{ vpc_region }}"
+    if_exist_do_not_create: true
+  register: my_nat_gateway_az1
+
+- name: Debug nat gw
+  debug: var=my_nat_gateway_az1
+
+- name: Set Nat Gateway ID in variable [AZ-1]
+  set_fact:
+    nat_gateway_az1_id: "{{ my_nat_gateway_az1.nat_gateway_id }}"
+
+
+- name: Create NAT GW [AZ-2]
+  ec2_vpc_nat_gateway:
+    state: present
+    subnet_id: "{{ public_subnet_az2_id }}"
+    wait: yes
+    region: "{{ vpc_region }}"
+    if_exist_do_not_create: true
+  register: my_nat_gateway_az2
+
+- name: Set Nat Gateway ID in variable [AZ-2]
+  set_fact:
+    nat_gateway_az2_id: "{{ my_nat_gateway_az2.nat_gateway_id }}"
+
+# We pause a few seconds for the NAT Gateways to be ready.
+
+- pause: seconds=5
